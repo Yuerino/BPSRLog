@@ -41,3 +41,5 @@ docs/
 
 # Proto files
 /proto/
+
+config.json
