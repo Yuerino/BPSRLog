@@ -53,6 +53,18 @@ def get_world_ntf_method_name(method_id: int) -> str:
         return f"UNKNOWN_METHOD_{method_id:08X}"
 
 
+class ChitChatChannelType(IntEnum):
+    Unknown = 0
+    World = 1
+    Current = 2
+    Team = 3
+    Guild = 4
+    Private = 5
+    Group = 6
+    TopNotice = 7
+    System = 99
+
+
 __all__ = [
     "MessageType",
     "ServiceID",

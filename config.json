@@ -1,0 +1,10 @@
+{
+  "discord": {
+    "websocket_url": "",
+    "jwt_token": "",
+    "reconnect_delay": 5.0,
+    "ping_interval": 30.0,
+    "max_retries": 10,
+    "enabled": false
+  }
+}

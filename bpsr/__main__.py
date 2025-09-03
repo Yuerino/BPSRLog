@@ -3,6 +3,8 @@ from __future__ import annotations
 import argparse
 import sys
 
+from bpsr.config import Config, get_default_config_path
+
 from .logutil import configure, get_logger
 from .packet import PacketCapture, get_default_interface, list_interfaces, print_interfaces, resolve_interface, select_interface_interactive
 
@@ -52,10 +54,50 @@ def main(argv: list[str] | None = None):
     configure(args.verbose)
 
     interface = handle_interface_selection(args)
+    logger = get_logger("main")
+
+    config = Config.load_from_file(get_default_config_path())
+
+    discord_client = None
+    if config.discord.enabled:
+        from .discord import DiscordWebSocketClient
+        from .handler.notify_handler import set_discord_client
+
+        discord_client = DiscordWebSocketClient(config.discord)
+        set_discord_client(discord_client)
+        discord_client.start()
+        logger.info("Discord WebSocket client initialized and started")
 
     packet_capture = PacketCapture()
     packet_capture.set_interface(interface)
-    packet_capture.run()
+
+    try:
+        capture_background = False
+        if capture_background:
+            packet_capture.run_threaded()
+
+            try:
+                while packet_capture.running:
+                    import time
+
+                    time.sleep(1.0)
+            except KeyboardInterrupt:
+                logger.info("Received interrupt signal, shutting down...")
+        else:
+            packet_capture.run()
+
+    except KeyboardInterrupt:
+        logger.info("Received interrupt signal, shutting down...")
+    finally:
+        if packet_capture.running:
+            packet_capture.stop()
+
+        if discord_client:
+            discord_client.stop()
+
+        config.save_to_file(get_default_config_path())
+
+        logger.info("Shutdown complete")
 
 
 if __name__ == "__main__":  # pragma: no cover
