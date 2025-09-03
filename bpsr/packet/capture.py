@@ -17,8 +17,8 @@ from .interface import get_interface_description
 class PacketCapture:
     def __init__(self):
         self.client_ip = get_local_ip()
-        # self.filter = f"host {self.client_ip} and tcp"
-        self.filter = "tcp"
+        # self.filter = f"host {self.client_ip} and tcp and not port 53"
+        self.filter = "tcp and not port 53"
         self.interface: str | None = None
         self.logger = get_logger("PacketCapture")
         self.tcp_session = TCPSession()

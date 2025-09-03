@@ -62,6 +62,9 @@ original_guess_payload_class = TCP.guess_payload_class
 
 
 def tcp_guess_payload_class(tcp_packet, payload):
+    if not payload:
+        return original_guess_payload_class(tcp_packet, payload)
+
     payload = bytes(payload)
     if len(payload) < 4:
         return original_guess_payload_class(tcp_packet, payload)

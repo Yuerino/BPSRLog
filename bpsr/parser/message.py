@@ -137,7 +137,6 @@ class AckFrameUpMessage(Message):
 class AckFrameDownMessage(Message):
     @classmethod
     def from_payload(cls, payload, is_compressed, **kwargs) -> AckFrameDownMessage:
-        # kwargs.setdefault("payload", None)
         kwargs["payload"] = payload
         return cls(**kwargs)
 
