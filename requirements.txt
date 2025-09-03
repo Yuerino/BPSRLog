@@ -1,0 +1,4 @@
+scapy>=2.5.0
+PyQt6
+zstandard>=0.22.0
+protobuf>=4.25.0

@@ -1,0 +1,54 @@
+[project]
+name = "BPSRLog"
+version = "0.0.1"
+description = "Blue Protocol Logger"
+readme = "README.md"
+license = { text = "MPL-2.0" }
+requires-python = ">=3.10"
+dependencies = [
+  "scapy>=2.5.0",
+  "PyQt6",
+]
+
+develop = ["ruff"]
+
+[tool.ruff]
+line-length = 180
+target-version = "py311"
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-first-party = ["bpsr"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint]
+select = [
+  "E",  # pycodestyle errors
+  "F",  # pyflakes
+  "W",  # pycodestyle warnings
+  "I",  # isort
+  "N",  # pep8-naming
+  "UP", # pyupgrade
+  "PL", # pylint subset
+  "PERF", # performance
+]
+ignore = [
+  # Project-wide ignores requested by user
+  "E402",   # module level import not at top of file
+  "PLR2004",# Magic value used in comparison — replace with constant recommended
+  "PLR0911",# Too many return statements
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
+
+[tool.black]
+line-length = 180
